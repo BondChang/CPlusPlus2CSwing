@@ -1,9 +1,12 @@
 package com.sunwise.convert;
 
 import javax.swing.*;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,8 +39,33 @@ public class SeleteFile extends JDialog {
         this.setLocation(new Point((int) (lx / 2) - 150, (int) (ly / 2) - 150));// 设定窗口出现位置
         panel.add(new JScrollPane(sourceTable));
         add(panel, BorderLayout.CENTER);
-
+        final MyCheckBoxRenderer check = new MyCheckBoxRenderer();
+        sourceTable.getColumnModel().getColumn(0).setHeaderRenderer(check);
+        sourceTable.getTableHeader().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e){
+                if(sourceTable.getColumnModel().getColumnIndexAtX(e.getX())==0){//如果点击的是第0列，即checkbox这一列
+                    JCheckBox Checkbox = (JCheckBox)check;
+                    boolean b = !check.isSelected();
+                    check.setSelected(b);
+                    sourceTable.getTableHeader().repaint();
+                    for(int i=0;i<sourceTable.getRowCount();i++){
+                        sourceTable.getModel().setValueAt(b, i, 0);//把这一列都设成和表头一样
+                    }
+                }
+            }
+        });
         JPanel btnPanel = new JPanel();
+//        JButton btnSel = new JButton("全选");
+//        btnPanel.add(btnSel);
+//        btnSel.addActionListener(new ActionListener() {
+//            @Override public void actionPerformed(ActionEvent e) {
+//                for(int i=0;i<sourceTable.getRowCount();i++){
+//                    sourceTable.getModel().setValueAt(false, i, 0);//把这一列都设成和表头一样
+//                }
+//
+//            }
+//        });
         /* 创建一个进度条 */
    //    final JProgressBar progressBar = new JProgressBar();
         // progressBar.
@@ -81,6 +109,8 @@ public class SeleteFile extends JDialog {
                 System.exit(0);
             }
         });
+
+
 
         add(btnPanel, BorderLayout.SOUTH);
 

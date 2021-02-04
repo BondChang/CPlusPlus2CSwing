@@ -5,7 +5,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 public class RadioButtonRenderer implements TableCellRenderer {
-    public JRadioButton btn = new JRadioButton();
+    public JCheckBox btn = new JCheckBox();
 
     public Component getTableCellRendererComponent(JTable table, Object value,
                                                    boolean isSelected, boolean hasFocus, int row, int column) {

@@ -20,8 +20,7 @@ public class GetPaths {
     /* H代码文件列表 */
     private List<String> hPathFiles;
 
-
-    public GetPaths(String directoryPath)  {
+    public GetPaths(String directoryPath) {
         File dirFile = new File(directoryPath);
 
         /* 判断文件夹存在 且 的确是文件夹 */
@@ -55,24 +54,23 @@ public class GetPaths {
                 /* 如果是文件夹, 则递归处理 */
                 parseDirectory(file, rootPathString);
             } else if (file.isFile()) {
-                String fileName=file.getAbsolutePath();
-//                String fileName = file.getCanonicalPath();
-//                Path fileNamePath = Paths.get(fileName);
-//                fileName = "./" + rootPath.relativize(fileNamePath).toString();
-//                fileName = FilenameUtils.separatorsToUnix(fileName);fileName
-                String suffixName = fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
+                String fileName = file.getAbsolutePath();
+                //                String fileName = file.getCanonicalPath();
+                //                Path fileNamePath = Paths.get(fileName);
+                //                fileName = "./" + rootPath.relativize(fileNamePath).toString();
+                //                fileName = FilenameUtils.separatorsToUnix(fileName);fileName
+                String suffixName = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
                 if (suffixName.equalsIgnoreCase("cpp")) {
                     /* Cpp文件 */
                     cPaths.add(fileName);
                 } else if (suffixName.equalsIgnoreCase("h")) {
                     hPathFiles.add(fileName);
-                }else if(suffixName.equalsIgnoreCase("hpp")){
+                } else if (suffixName.equalsIgnoreCase("hpp")) {
                     hPathFiles.add(fileName);
                 }
             }
         }
     }
-
 
     public List<String> getcPaths() {
         return cPaths;
@@ -82,4 +80,17 @@ public class GetPaths {
         return hPathFiles;
     }
 
+    public static void main(String[] args) {
+        GetPaths getPaths = new GetPaths("C:\\Users\\bondc\\Desktop\\test");
+        List<String> hPathsList = getPaths.gethPathFiles();
+        String hStr = "";
+        for (String h : hPathsList) {
+            hStr += "\"";
+            hStr += h.replace("\\", "/");
+            hStr += "\"";
+            hStr += ",";
+        }
+        System.out.println(hStr);
+
+    }
 }
